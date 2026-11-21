@@ -1,0 +1,10 @@
+/target
+/out
+
+# 测试图和人工色版不进仓库
+*.tif
+*.tiff
+*.rar
+*.psd
+*.png
+*.jpg

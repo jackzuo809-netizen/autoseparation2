@@ -1,0 +1,15 @@
+[package]
+name = "autoseparation"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+anyhow = "1.0.104"
+bytemuck = { version = "1.25.2", features = ["derive"] }
+clap = { version = "4.6.8", features = ["derive"] }
+image = "0.25.10"
+lcms2 = "6.3.0"
+pollster = "1.0.3"
+rayon = "1.12.0"
+tiff = "0.11"
+wgpu = "30.0.2"
