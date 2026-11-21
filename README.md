@@ -2,16 +2,17 @@
 
 输入一张图,自动选油墨、分色,输出分层 PSD 和每色一张索引色 TIFF(`名称-1.tif` … `名称-9.tif`、`名称-a.tif` …),格式与人工分色文件一致。
 
-## 在 5090 电脑上编译
+## 编译
 
-把整个 `autoseparation` 文件夹拷过去(`out/`、`target/` 不用拷)。
+```bash
+git clone https://github.com/jackzuo809-netizen/autoseparation2.git
+```
 
 ### Windows
 
 1. 安装 Rust:<https://rustup.rs>,一路默认。
 2. 安装 Visual Studio Build Tools(勾选「使用 C++ 的桌面开发」),读 CMYK 图的色彩管理库需要 C 编译器。
-3. 显卡驱动用最新版即可,**不需要装 CUDA**。
-4. 在文件夹里打开 PowerShell:
+3. 在文件夹里打开 PowerShell:
 
 ```powershell
 cargo build --release
@@ -27,16 +28,14 @@ sudo apt install build-essential        # 一般已经有
 cargo build --release
 ```
 
-需要装好 NVIDIA 驱动(含 Vulkan 支持,官方驱动默认就有)。
-
 ## 运行
 
 ```bash
 autoseparation 原图.tif -n 11 -o 输出文件夹
 ```
 
-开头会打印用的是哪块显卡,例如 `显卡加速:NVIDIA GeForce RTX 5090(Vulkan)`。
-如果打印的是「没有可用的显卡,用 CPU 计算」,说明显卡没被识别,请检查驱动。
+默认用 CPU 计算。实测在 44 线程的 Xeon 上,CPU 比显卡(wgpu)快约 9 倍,4K 图 4–5 秒。
+显卡版本保留为可选(`--gpu on`),目前的着色器实现还没有针对显卡优化。
 
 常用参数:
 
@@ -45,7 +44,7 @@ autoseparation 原图.tif -n 11 -o 输出文件夹
 | `-n 11` | 油墨数量;不填则自动决定 |
 | `--garment "#000000"` | 衣服颜色;深色衣服会自动加白墨打底 |
 | `--mode tone` / `--mode flat` | 强制按渐变图 / 平涂图处理(默认自动判断) |
-| `--gpu on` / `--gpu off` | 强制用显卡 / 只用 CPU(默认有显卡就用) |
+| `--gpu on` | 用显卡计算(默认关闭,实测 CPU 更快) |
 | `--coherence 0.03` | 色版成片程度,越大越干净、颜色略偏;0 关闭 |
 | `--coherence-mm 10` | 成片的范围(毫米) |
 | `--cmyk-profile 文件.icc` | CMYK 原图没有内嵌 ICC 时用的配置文件 |

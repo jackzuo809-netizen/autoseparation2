@@ -94,8 +94,8 @@ struct Args {
     /// 输出分辨率 DPI(不填则用原图的,原图没有则 300)
     #[arg(long)]
     dpi: Option<u32>,
-    /// 显卡加速(渐变图的逐像素求解)
-    #[arg(long, value_enum, default_value = "auto")]
+    /// 显卡加速(渐变图的逐像素求解)。实测多核 CPU 更快,默认关闭
+    #[arg(long, value_enum, default_value = "off")]
     gpu: GpuMode,
     /// CMYK 原图无内嵌 ICC 时使用的配置文件
     #[arg(long)]
